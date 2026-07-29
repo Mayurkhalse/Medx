@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: medx-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  ml-service:
+    build:
+      context: ./ml_service
+    container_name: medx-ml-service
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=./models/disease_model.pkl
+      - LOG_LEVEL=info
+    depends_on:
+      - mongodb
+
+  server:
+    build:
+      context: ./server
+    container_name: medx-express-server
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/medx
+      - JWT_SECRET=supersecretjwtsecretkey123!
+      - JWT_REFRESH_SECRET=supersecretrefreshjwtsecretkey123!
+      - ML_SERVICE_URL=http://ml-service:8000
+      - LLM_API_KEY=mock-key
+    depends_on:
+      - mongodb
+      - ml-service
+
+  client:
+    build:
+      context: ./client
+    container_name: medx-react-client
+    ports:
+      - "5173:5173"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - server
+
+volumes:
+  mongodb_data:
