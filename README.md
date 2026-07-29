@@ -435,3 +435,46 @@ LOG_LEVEL=info
   the What-If feature instead of hypothetical-only reasoning.
 - Multi-language support for reports and LLM responses.
 - Model retraining pipeline + versioning/monitoring dashboard.
+
+---
+
+## 11. How to Run / Execute the Program
+
+### Option 1: Running Locally (Development Mode)
+
+1. **Install Dependencies**:
+   From the root directory, run the following command to install dependencies for both the frontend client and backend server:
+   ```bash
+   npm run install:all
+   ```
+
+2. **Configure Environment Variables**:
+   Create a `.env` file in the `server` directory with the following variables:
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/medx
+   JWT_SECRET=supersecretjwtsecretkey123!
+   JWT_REFRESH_SECRET=supersecretrefreshjwtsecretkey123!
+   ML_SERVICE_URL=http://localhost:8000
+   LLM_API_KEY=your_gemini_api_key_here
+   ```
+
+3. **Start the Services**:
+   Run the following command in the root directory to start the frontend client, backend server, and python ML service concurrently:
+   ```bash
+   npm run dev
+   ```
+   * **Frontend Client**: [http://localhost:5173/](http://localhost:5173/)
+   * **ML Service**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+   * **Backend Server**: [http://localhost:5000](http://localhost:5000)
+
+*(Note: Ensure a MongoDB instance is running locally on port 27017, or point `MONGO_URI` to a remote MongoDB instance).*
+
+### Option 2: Running with Docker Compose
+
+If you have Docker and Docker Compose installed, you can start all services (including MongoDB) in containers:
+
+```bash
+docker compose up --build
+```
+
