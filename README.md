@@ -32,8 +32,7 @@ risk profile?").
 | OCR | Tesseract OCR / Google Vision API / AWS Textract (for scanned PDFs & images) |
 | Auth | Passport.js (Google OAuth 2.0 strategy) + JWT for session management |
 | LLM Integration | Google Gemini API (free tier) called from Node backend or FastAPI |
-| File Storage | AWS S3 / Cloudinary (for uploaded report PDFs/images) |
-| Deployment | Docker containers — separate containers for Node app, FastAPI ML service, MongoDB |
+| Deployment | Local process execution (concurrently) |
 
 **Key architectural rule:** All ML inference (prediction, classification, risk
 scoring) happens exclusively inside the FastAPI service. The Node/Express backend
@@ -469,12 +468,4 @@ LOG_LEVEL=info
    * **Backend Server**: [http://localhost:5000](http://localhost:5000)
 
 *(Note: Ensure a MongoDB instance is running locally on port 27017, or point `MONGO_URI` to a remote MongoDB instance).*
-
-### Option 2: Running with Docker Compose
-
-If you have Docker and Docker Compose installed, you can start all services (including MongoDB) in containers:
-
-```bash
-docker compose up --build
-```
 
